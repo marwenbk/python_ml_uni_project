@@ -1,0 +1,324 @@
+
+
+
+================================================================================
+STUDENT PERFORMANCE PREDICTION - COMPREHENSIVE ML PIPELINE
+================================================================================
+
+
+################################################################################
+#                                                                              #
+#                    SCENARIO A: WITHOUT G1 & G2                              #
+#                                                                              #
+################################################################################
+================================================================================
+LOADING AND PREPARING DATA
+================================================================================
+Dataset shape: (649, 33)
+Features: 40, Samples: 649
+Target (G3) - Mean: 11.91, Std: 3.23
+
+
+--- Removing G1 and G2 ---
+Features after removing G1, G2: 38
+
+--- Skipping VIF removal (too computationally expensive) ---
+Using feature selection methods to identify best features
+
+
+--- Feature Selection: Union of methods (top 20) ---
+F-regression selected: 20 features
+Mutual Info selected: 20 features
+Random Forest selected: 20 features
+Union: 29 unique features
+
+Top 15 features by average rank:
+   1. failures             (avg rank:   0.0)
+   2. school               (avg rank:   3.3)
+   3. higher               (avg rank:   4.7)
+   4. Fedu                 (avg rank:   5.3)
+   5. Medu                 (avg rank:   7.7)
+   6. freetime             (avg rank:   8.0)
+   7. Walc                 (avg rank:   9.3)
+   8. Dalc                 (avg rank:   9.7)
+   9. sex                  (avg rank:  12.0)
+  10. studytime            (avg rank:  12.3)
+  11. traveltime           (avg rank:  13.0)
+  12. reason_reputation    (avg rank:  13.3)
+  13. reason_other         (avg rank:  13.3)
+  14. address              (avg rank:  13.7)
+  15. absences             (avg rank:  13.7)
+
+Final feature set: 29 features
+Train size: 519, Test size: 130
+
+================================================================================
+BASELINE MODELS - Scenario A
+================================================================================
+
+--- Linear Regression ---
+  Train R²: 0.3731, Train RMSE: 2.5687
+  Test R²:  0.1615, Test MAE: 2.1675, Test RMSE: 2.8595, Test MAPE: 69190840194131952.00%
+
+--- Decision Tree ---
+  Train R²: 1.0000, Train RMSE: 0.0000
+  Test R²:  -0.3157, Test MAE: 2.5385, Test RMSE: 3.5820, Test MAPE: 86607685141740320.00%
+
+================================================================================
+ADVANCED MODELS - Scenario A - Tree Models
+================================================================================
+
+--- Random Forest ---
+  Train R²: 0.8365, Train RMSE: 1.3120
+  Test R²:  0.1576, Test MAE: 2.1218, Test RMSE: 2.8661, Test MAPE: 67992089657295560.00%
+  CV R² (5-fold): 0.2463 ± 0.1050
+
+--- Gradient Boosting ---
+  Train R²: 0.7450, Train RMSE: 1.6382
+  Test R²:  0.1844, Test MAE: 2.0793, Test RMSE: 2.8202, Test MAPE: 61972652029871936.00%
+  CV R² (5-fold): 0.2392 ± 0.1005
+
+================================================================================
+ADVANCED MODELS - Scenario A - Linear Models
+================================================================================
+
+--- Ridge Regression ---
+  Train R²: 0.3731, Train RMSE: 2.5687
+  Test R²:  0.1620, Test MAE: 2.1666, Test RMSE: 2.8587, Test MAPE: 69214946456650440.00%
+  CV R² (5-fold): 0.2574 ± 0.0852
+
+--- Lasso Regression ---
+  Train R²: 0.3572, Train RMSE: 2.6012
+  Test R²:  0.1876, Test MAE: 2.1019, Test RMSE: 2.8146, Test MAPE: 68611298241202840.00%
+  CV R² (5-fold): 0.2802 ± 0.0487
+
+--- SVR ---
+  Train R²: 0.4754, Train RMSE: 2.3498
+  Test R²:  0.1686, Test MAE: 2.0763, Test RMSE: 2.8474, Test MAPE: 75376742809678768.00%
+  CV R² (5-fold): 0.2911 ± 0.0283
+
+================================================================================
+HYPERPARAMETER TUNING - Scenario A - Tree Models
+================================================================================
+
+--- Tuning Random Forest ---
+  Best params: {'max_depth': 10, 'n_estimators': 100}
+  Best CV R²: 0.2580
+
+--- Tuning Gradient Boosting ---
+  Best params: {'max_depth': 3, 'n_estimators': 50}
+  Best CV R²: 0.2495
+
+================================================================================
+HYPERPARAMETER TUNING - Scenario A - Linear Models
+================================================================================
+
+--- Tuning Ridge Regression ---
+  Best params: {'alpha': 10}
+  Best CV R²: 0.2624
+
+--- Tuning Lasso Regression ---
+  Best params: {'alpha': 0.1}
+  Best CV R²: 0.2802
+
+================================================================================
+SCENARIO A - COMPREHENSIVE RESULTS
+================================================================================
+
+                    Model Train R² Test R² Test MAE Test RMSE             Test MAPE CV R² (mean±std)
+Gradient Boosting (tuned)   0.6072  0.2064   2.0791    2.7819 65902674376540128.00%    0.2730±0.0680
+         Lasso Regression   0.3572  0.1876   2.1019    2.8146 68611298241202840.00%    0.2802±0.0487
+            Lasso (tuned)   0.3572  0.1876   2.1019    2.8146 68611298241202840.00%    0.2970±0.0358
+        Gradient Boosting   0.7450  0.1844   2.0793    2.8202 61972652029871936.00%    0.2392±0.1005
+                      SVR   0.4754  0.1686   2.0763    2.8474 75376742809678768.00%    0.2911±0.0283
+            Ridge (tuned)   0.3731  0.1660   2.1584    2.8518 69426917900771600.00%    0.2906±0.0468
+         Ridge Regression   0.3731  0.1620   2.1666    2.8587 69214946456650440.00%    0.2574±0.0852
+        Linear Regression   0.3731  0.1615   2.1675    2.8595 69190840194131952.00%              N/A
+            Random Forest   0.8365  0.1576   2.1218    2.8661 67992089657295560.00%    0.2463±0.1050
+    Random Forest (tuned)   0.8403  0.1544   2.0996    2.8717 73363832337111712.00%    0.2829±0.0907
+            Decision Tree   1.0000 -0.3157   2.5385    3.5820 86607685141740320.00%              N/A
+
+================================================================================
+BEST MODEL: Gradient Boosting (tuned)
+Test R²: 0.2064
+================================================================================
+
+
+
+
+
+
+################################################################################
+#                                                                              #
+#                      SCENARIO B: WITH G1 & G2                                #
+#                                                                              #
+################################################################################
+================================================================================
+LOADING AND PREPARING DATA
+================================================================================
+Dataset shape: (649, 33)
+Features: 40, Samples: 649
+Target (G3) - Mean: 11.91, Std: 3.23
+
+
+--- Keeping all features (including G1 and G2) ---
+Skipping VIF removal for computational efficiency
+
+
+--- Feature Selection: Union of methods (top 25) ---
+F-regression selected: 25 features
+Mutual Info selected: 25 features
+Random Forest selected: 25 features
+Union: 37 unique features
+
+Top 15 features by average rank:
+   1. G2                   (avg rank:   0.0)
+   2. G1                   (avg rank:   1.3)
+   3. failures             (avg rank:   5.7)
+   4. Medu                 (avg rank:   6.3)
+   5. school               (avg rank:   6.7)
+   6. Fedu                 (avg rank:  10.0)
+   7. goout                (avg rank:  11.0)
+   8. absences             (avg rank:  11.0)
+   9. Dalc                 (avg rank:  12.0)
+  10. health               (avg rank:  12.3)
+  11. Walc                 (avg rank:  12.7)
+  12. traveltime           (avg rank:  13.0)
+  13. studytime            (avg rank:  13.3)
+  14. higher               (avg rank:  13.3)
+  15. reason_other         (avg rank:  16.0)
+
+Final feature set: 37 features (including G1, G2)
+Train size: 519, Test size: 130
+
+================================================================================
+BASELINE MODELS - Scenario B
+================================================================================
+
+--- Linear Regression ---
+  Train R²: 0.8581, Train RMSE: 1.2220
+  Test R²:  0.8479, Test MAE: 0.7631, Test RMSE: 1.2178, Test MAPE: 34675567534593412.00%
+
+--- Decision Tree ---
+  Train R²: 1.0000, Train RMSE: 0.0000
+  Test R²:  0.5906, Test MAE: 1.0385, Test RMSE: 1.9981, Test MAPE: 34643074056696132.00%
+
+================================================================================
+ADVANCED MODELS - Scenario B - Tree Models
+================================================================================
+
+--- Random Forest ---
+  Train R²: 0.9739, Train RMSE: 0.5238
+  Test R²:  0.8353, Test MAE: 0.7683, Test RMSE: 1.2671, Test MAPE: 41362762092483416.00%
+  CV R² (5-fold): 0.8396 ± 0.0111
+
+--- Gradient Boosting ---
+  Train R²: 0.9648, Train RMSE: 0.6086
+  Test R²:  0.8069, Test MAE: 0.7931, Test RMSE: 1.3721, Test MAPE: 37907598980323120.00%
+  CV R² (5-fold): 0.8419 ± 0.0085
+
+================================================================================
+ADVANCED MODELS - Scenario B - Linear Models
+================================================================================
+
+--- Ridge Regression ---
+  Train R²: 0.8581, Train RMSE: 1.2220
+  Test R²:  0.8479, Test MAE: 0.7635, Test RMSE: 1.2178, Test MAPE: 34830767480472624.00%
+  CV R² (5-fold): 0.8209 ± 0.0169
+
+--- Lasso Regression ---
+  Train R²: 0.8454, Train RMSE: 1.2757
+  Test R²:  0.8647, Test MAE: 0.7093, Test RMSE: 1.1486, Test MAPE: 36633040557058704.00%
+  CV R² (5-fold): 0.8419 ± 0.0276
+
+--- SVR ---
+  Train R²: 0.7847, Train RMSE: 1.5054
+  Test R²:  0.6899, Test MAE: 1.1021, Test RMSE: 1.7389, Test MAPE: 62363833884719648.00%
+  CV R² (5-fold): 0.6687 ± 0.0557
+
+================================================================================
+HYPERPARAMETER TUNING - Scenario B - Tree Models
+================================================================================
+
+--- Tuning Random Forest ---
+  Best params: {'max_depth': 10, 'n_estimators': 100}
+  Best CV R²: 0.8406
+
+--- Tuning Gradient Boosting ---
+  Best params: {'max_depth': 3, 'n_estimators': 50}
+  Best CV R²: 0.8490
+
+================================================================================
+HYPERPARAMETER TUNING - Scenario B - Linear Models
+================================================================================
+
+--- Tuning Ridge Regression ---
+  Best params: {'alpha': 10}
+  Best CV R²: 0.8225
+
+--- Tuning Lasso Regression ---
+  Best params: {'alpha': 0.1}
+  Best CV R²: 0.8419
+
+================================================================================
+SCENARIO B - COMPREHENSIVE RESULTS
+================================================================================
+
+                    Model Train R² Test R² Test MAE Test RMSE             Test MAPE CV R² (mean±std)
+         Lasso Regression   0.8454  0.8647   0.7093    1.1486 36633040557058704.00%    0.8419±0.0276
+            Lasso (tuned)   0.8454  0.8647   0.7093    1.1486 36633040557058704.00%    0.8449±0.0480
+        Linear Regression   0.8581  0.8479   0.7631    1.2178 34675567534593412.00%              N/A
+         Ridge Regression   0.8581  0.8479   0.7635    1.2178 34830767480472624.00%    0.8209±0.0169
+            Ridge (tuned)   0.8576  0.8478   0.7657    1.2181 36104323118105616.00%    0.8393±0.0422
+            Random Forest   0.9739  0.8353   0.7683    1.2671 41362762092483416.00%    0.8396±0.0111
+    Random Forest (tuned)   0.9751  0.8322   0.7770    1.2791 41155101715766664.00%    0.8518±0.0617
+Gradient Boosting (tuned)   0.9338  0.8268   0.7748    1.2994 42240414055417872.00%    0.8552±0.0570
+        Gradient Boosting   0.9648  0.8069   0.7931    1.3721 37907598980323120.00%    0.8419±0.0085
+                      SVR   0.7847  0.6899   1.1021    1.7389 62363833884719648.00%    0.6687±0.0557
+            Decision Tree   1.0000  0.5906   1.0385    1.9981 34643074056696132.00%              N/A
+
+================================================================================
+BEST MODEL: Lasso Regression
+Test R²: 0.8647
+================================================================================
+
+
+
+
+################################################################################
+#                                                                              #
+#                        FINAL COMPARISON & INSIGHTS                            #
+#                                                                              #
+################################################################################
+
+=== Scenario A (Without G1/G2) ===
+Best models:
+  1. Gradient Boosting (tuned)      - R²: 0.2064, RMSE: 2.7819
+  2. Lasso Regression               - R²: 0.1876, RMSE: 2.8146
+  3. Lasso (tuned)                  - R²: 0.1876, RMSE: 2.8146
+
+=== Scenario B (With G1/G2) ===
+Best models:
+  1. Lasso Regression               - R²: 0.8647, RMSE: 1.1486
+  2. Lasso (tuned)                  - R²: 0.8647, RMSE: 1.1486
+  3. Ridge Regression               - R²: 0.8479, RMSE: 1.2178
+
+=== Key Insights ===
+1. Scenario A (Without G1/G2):
+   - More challenging but realistic prediction task
+   - Best R²: 0.2064 (Expected: 0.20-0.40)
+   - Useful for early intervention before exams
+
+2. Scenario B (With G1/G2):
+   - High-accuracy benchmark showing upper bound
+   - Best R²: 0.8647 (Expected: 0.80-0.95)
+   - Useful for grade progression prediction
+
+3. Recommendations:
+   - For deployment: Gradient Boosting (tuned) (Scenario A)
+   - For benchmarking: {sorted_b[0][0]} (Scenario B)
+
+================================================================================
+ANALYSIS COMPLETE!
+================================================================================
+

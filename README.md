@@ -65,6 +65,8 @@ ml_msb/
 ├── TECHNICAL_REPORT.md                # 📝 Technical methodology & decisions
 ├── PROJECT_SUMMARY.md                 # 📋 Executive summary
 ├── README_PROJECT_COMPLETE.md         # 📖 Complete navigation guide
+├── PRESENTATION_SLIDES.md             # 🎤 40+ presentation slides
+├── PRESENTATION_GUIDE.md              # 📖 How to use and convert slides
 │
 ├── modeling_final.log                 # Full training results log
 │
@@ -177,6 +179,8 @@ All visualizations are publication-quality PNG files:
 - **[TECHNICAL_REPORT.md](TECHNICAL_REPORT.md)** - Detailed methodology and technical decisions
 - **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Executive summary for stakeholders
 - **[README_PROJECT_COMPLETE.md](README_PROJECT_COMPLETE.md)** - Comprehensive project guide
+- **[PRESENTATION_SLIDES.md](PRESENTATION_SLIDES.md)** - 40+ slides for presentations (20-40 min)
+- **[PRESENTATION_GUIDE.md](PRESENTATION_GUIDE.md)** - How to convert slides and present effectively
 
 ## 🛠️ Technologies Used
 
